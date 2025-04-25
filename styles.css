@@ -1,0 +1,91 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 40px;
+    max-width: 900px;
+}
+h1 {
+    color: #333;
+}
+.equation-container {
+    margin: 30px 0;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+.term {
+    cursor: help;
+    border-bottom: 1px dashed #666;
+    position: relative;
+    display: inline-block;
+}
+.term .tooltip {
+    visibility: hidden;
+    width: 450px;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 10px;
+    position: fixed; /* Fixed positioning */
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.term:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+.code-snippet {
+    margin-top: 10px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+}
+.toggle-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+.toggle-button:hover {
+    background-color: #45a049;
+}
+.code-preview {
+    display: none;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #1E1E1E;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+.highlight-line {
+    background-color: rgba(255, 255, 0, 0.1);
+    display: inline-block;
+    width: 100%;
+}
+.tabs {
+    display: flex;
+    margin-bottom: -1px;
+}
+.tab {
+    padding: 10px 20px;
+    background-color: #ddd;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.tab.active {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #4CAF50;
+}
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
