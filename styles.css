@@ -136,44 +136,55 @@ pre.line-numbers {
     position: relative;
     padding-left: 0;
     counter-reset: linenumber;
-    display: flex;
-    flex-direction: column;
+    display: block;
+    overflow: auto;
 }
 
 pre.line-numbers > code {
     position: relative;
     margin-left: 3.5em; /* Space for line numbers */
     display: block;
-    width: calc(100% - 3.5em);
+    padding: 0.5em 0 !important;
+    line-height: 1.5em !important;
+    white-space: pre; /* Keep formatting */
 }
 
 .line-numbers .line-numbers-rows {
     position: absolute;
-    pointer-events: none;
-    top: 0;
-    font-size: 100%;
+    pointer-events: all;
+    top: 0.5em; /* Match padding of code element */
     left: 0;
-    width: 3em; /* works for line-numbers below 1000 lines */
+    width: 3em;
     user-select: none;
     border-right: 1px solid #555;
     background-color: rgba(30, 30, 30, 0.4);
-    height: 100%;
-    margin-right: 0.5em;
+    height: calc(100% - 1em); /* Account for top and bottom padding */
+}
+
+/* Each line */
+.line-numbers code .line {
+    display: inline-block;
+    width: 100%;
+    height: 1.5em;
+    line-height: 1.5em;
 }
 
 .line-numbers-rows > span {
     display: block;
     counter-increment: linenumber;
-    line-height: 1.5;
-    padding-top: 0;
+    line-height: 1.5em;
+    height: 1.5em;
 }
 
 .line-numbers-rows > span:before {
     content: counter(linenumber);
     color: #888;
-    display: block;
+    display: inline-block;
     padding: 0 0.5em;
     text-align: right;
+    width: 2em;
+    height: 1.5em;
+    line-height: 1.5em;
 }
 
 /* Style for line number highlighting */
@@ -181,27 +192,21 @@ pre.line-numbers > code {
     background-color: rgba(100, 100, 100, 0.3);
 }
 
-/* Style for active line */
+/* Style for active line number */
 .line-numbers-rows > span.active-line {
-    background-color: rgba(76, 175, 80, 0.3);
+    background-color: rgba(76, 175, 80, 0.7);
+    color: white;
     font-weight: bold;
 }
 
-/* Highlight the corresponding code line when line number is active */
-.line-numbers-rows > span.active-line ~ code .line:nth-child(var(--line-number)) {
-    background-color: rgba(76, 175, 80, 0.1);
+/* Style for highlighted code line */
+.line.highlighted-line {
+    background-color: rgba(76, 175, 80, 0.15);
+    display: inline-block;
+    width: 100%;
+    border-radius: 0 3px 3px 0;
 }
 
-/* Add numbers to each line of code */
-pre.line-numbers code::before {
-    display: inline-block;
-    width: 3em;
-    border-right: 1px solid #555;
-    margin-right: 0.5em;
-    color: #888;
-    text-align: right;
-    padding-right: 0.5em;
-}
 .toggle-button {
     background-color: #4CAF50;
     color: white;

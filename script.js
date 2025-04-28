@@ -6,41 +6,86 @@ document.addEventListener('DOMContentLoaded', (event) => {
     
     // Initialize line numbers for blocks with line-numbers class
     document.querySelectorAll('pre.line-numbers').forEach((block) => {
-        // Get lines of code
-        const lines = block.textContent.trim().split('\n');
-        const linesCount = lines.length;
-        
-        // Get or create line numbers container
-        let lineNumbersContainer = block.querySelector('.line-numbers-rows');
-        if (!lineNumbersContainer) {
-            lineNumbersContainer = document.createElement('span');
-            lineNumbersContainer.className = 'line-numbers-rows';
-            block.appendChild(lineNumbersContainer);
-        }
-        
-        // Clear and rebuild line numbers
-        lineNumbersContainer.innerHTML = '';
-        for (let i = 0; i < linesCount; i++) {
-            const span = document.createElement('span');
-            span.setAttribute('data-line', (i + 1).toString());
-            lineNumbersContainer.appendChild(span);
-        }
-        
-        // Now we need to ensure each line of code is properly aligned with its number
-        const codeElement = block.querySelector('code');
-        if (codeElement) {
-            // Add a slight delay to ensure highlight.js has finished
-            setTimeout(() => {
-                // Force line breaks for each line to ensure alignment with numbers
-                const contentWithLineBreaks = lines.join('\n');
+        // Process after a small delay to ensure highlight.js has run
+        setTimeout(() => {
+            // Get the code element
+            const codeElement = block.querySelector('code');
+            if (!codeElement) return;
+            
+            // Get the raw content
+            const rawContent = codeElement.textContent;
+            
+            // Split into lines, keeping empty lines
+            const lines = rawContent.split('\n');
+            const linesCount = lines.length;
+            
+            // Get or create line numbers container
+            let lineNumbersContainer = block.querySelector('.line-numbers-rows');
+            if (!lineNumbersContainer) {
+                lineNumbersContainer = document.createElement('span');
+                lineNumbersContainer.className = 'line-numbers-rows';
+                block.appendChild(lineNumbersContainer);
+            }
+            
+            // Clear and rebuild line numbers
+            lineNumbersContainer.innerHTML = '';
+            for (let i = 0; i < linesCount; i++) {
+                const span = document.createElement('span');
+                span.setAttribute('data-line', (i + 1).toString());
+                lineNumbersContainer.appendChild(span);
+            }
+            
+            // Create a wrapper for each line for better alignment
+            const processedLines = [];
+            lines.forEach((line, index) => {
+                // Create a span for this line
+                processedLines.push(`<span class="line" data-line-number="${index + 1}">${line}</span>`);
+            });
+            
+            // Replace the content while preserving highlighting
+            const currentHtml = codeElement.innerHTML;
+            const newHtml = processedLines.join('\n');
+            
+            // Only update if needed to prevent flickering
+            if (currentHtml !== newHtml) {
+                // Store the current scroll position
+                const scrollTop = block.scrollTop;
                 
-                // Add the code back with proper line breaks
-                if (contentWithLineBreaks.trim() !== codeElement.textContent.trim()) {
-                    codeElement.textContent = contentWithLineBreaks;
-                    hljs.highlightBlock(codeElement);
-                }
-            }, 10);
-        }
+                // Apply the updated content
+                codeElement.innerHTML = newHtml;
+                
+                // Restore scroll position
+                block.scrollTop = scrollTop;
+                
+                // Re-apply highlighting
+                hljs.highlightBlock(codeElement);
+            }
+            
+            // Make the line numbers clickable and interactive
+            document.querySelectorAll('.line-numbers-rows span').forEach((lineNumberSpan) => {
+                lineNumberSpan.style.cursor = 'pointer';
+                
+                // Add click behavior
+                lineNumberSpan.addEventListener('click', function() {
+                    const lineNumber = this.getAttribute('data-line');
+                    
+                    // Highlight the line number
+                    document.querySelectorAll('.line-numbers-rows span').forEach(span => {
+                        span.classList.remove('active-line');
+                    });
+                    this.classList.add('active-line');
+                    
+                    // Highlight the corresponding code line
+                    const codeLines = codeElement.querySelectorAll('.line');
+                    codeLines.forEach(line => {
+                        line.classList.remove('highlighted-line');
+                        if (line.getAttribute('data-line-number') === lineNumber) {
+                            line.classList.add('highlighted-line');
+                        }
+                    });
+                });
+            });
+        }, 50); // Small delay to ensure highlighting is complete
     });
 });
 
