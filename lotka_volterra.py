@@ -168,13 +168,7 @@ def generate_time_plot(t, x, y, save_path='population_time_plot.png'):
 def generate_phase_portrait(x, y, save_path='phase_portrait.png'):
     """Generate and save the phase portrait plot"""
     plt.figure(figsize=(8, 8))
-    plt.plot(x, y, 'g-', linewidth=2)
-    
-    # Add arrow to show direction
-    arrows_idx = np.linspace(0, len(x)-100, 8, dtype=int)
-    for i in arrows_idx:
-        plt.arrow(x[i], y[i], x[i+10]-x[i], y[i+10]-y[i], 
-                  head_width=0.5, head_length=0.7, fc='g', ec='g')
+    plt.plot(x, y, 'g-', linewidth=2.5)
     
     plt.grid(True, alpha=0.3)
     plt.xlabel('Prey Population (x)', fontsize=12)
@@ -185,10 +179,7 @@ def generate_phase_portrait(x, y, save_path='phase_portrait.png'):
     eq_x = 4  # gamma/delta
     eq_y = 2.75  # alpha/beta
     plt.scatter([eq_x], [eq_y], color='red', s=100, zorder=5)
-    plt.annotate('Equilibrium\nPoint', 
-                 xy=(eq_x, eq_y),
-                 xytext=(eq_x+2, eq_y+2),
-                 arrowprops=dict(facecolor='black', shrink=0.05, width=1.5, headwidth=8))
+    plt.text(eq_x+0.5, eq_y+0.5, 'Equilibrium Point', fontsize=10)
     
     plt.tight_layout()
     plt.savefig(save_path, dpi=150, bbox_inches='tight')
