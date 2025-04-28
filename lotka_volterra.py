@@ -134,7 +134,74 @@ def plot_results(t, x, y, save_path=None):
     print(f"Average prey population: {np.mean(x):.2f}")
     print(f"Average predator population: {np.mean(y):.2f}")
 
+def generate_time_plot(t, x, y, save_path='population_time_plot.png'):
+    """Generate and save the population vs time plot"""
+    plt.figure(figsize=(10, 6))
+    plt.plot(t, x, 'b-', linewidth=2, label='Prey (x)')
+    plt.plot(t, y, 'r-', linewidth=2, label='Predator (y)')
+    plt.grid(True, alpha=0.3)
+    plt.xlabel('Time', fontsize=12)
+    plt.ylabel('Population', fontsize=12)
+    plt.title('Lotka-Volterra Model: Population Dynamics', fontsize=14)
+    plt.legend(fontsize=12)
+    
+    # Add annotations for key points in the cycle
+    # Find the first peak of prey population after initial transient
+    start_idx = 100  # Skip initial transient
+    prey_peak_idx = start_idx + np.argmax(x[start_idx:start_idx+200])
+    
+    # Add arrows and annotations
+    plt.annotate('Prey increases', 
+                 xy=(t[prey_peak_idx-80], x[prey_peak_idx-80]),
+                 xytext=(t[prey_peak_idx-80]-10, x[prey_peak_idx-80]-2),
+                 arrowprops=dict(facecolor='blue', shrink=0.05, width=1.5, headwidth=8))
+                 
+    plt.annotate('Predators increase\nas prey abundant', 
+                 xy=(t[prey_peak_idx], y[prey_peak_idx]),
+                 xytext=(t[prey_peak_idx]+5, y[prey_peak_idx]+3),
+                 arrowprops=dict(facecolor='red', shrink=0.05, width=1.5, headwidth=8))
+    
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=150, bbox_inches='tight')
+    plt.close()
+
+def generate_phase_portrait(x, y, save_path='phase_portrait.png'):
+    """Generate and save the phase portrait plot"""
+    plt.figure(figsize=(8, 8))
+    plt.plot(x, y, 'g-', linewidth=2)
+    
+    # Add arrow to show direction
+    arrows_idx = np.linspace(0, len(x)-100, 8, dtype=int)
+    for i in arrows_idx:
+        plt.arrow(x[i], y[i], x[i+10]-x[i], y[i+10]-y[i], 
+                  head_width=0.5, head_length=0.7, fc='g', ec='g')
+    
+    plt.grid(True, alpha=0.3)
+    plt.xlabel('Prey Population (x)', fontsize=12)
+    plt.ylabel('Predator Population (y)', fontsize=12)
+    plt.title('Phase Portrait', fontsize=14)
+    
+    # Add equilibrium point
+    eq_x = 4  # gamma/delta
+    eq_y = 2.75  # alpha/beta
+    plt.scatter([eq_x], [eq_y], color='red', s=100, zorder=5)
+    plt.annotate('Equilibrium\nPoint', 
+                 xy=(eq_x, eq_y),
+                 xytext=(eq_x+2, eq_y+2),
+                 arrowprops=dict(facecolor='black', shrink=0.05, width=1.5, headwidth=8))
+    
+    plt.tight_layout()
+    plt.savefig(save_path, dpi=150, bbox_inches='tight')
+    plt.close()
+
 if __name__ == "__main__":
-    # Example usage
-    t, x, y = simulate_lotka_volterra()
+    # Simulate the model
+    t, x, y = simulate_lotka_volterra(alpha=1.1, beta=0.4, gamma=0.4, delta=0.1, 
+                                     x0=10.0, y0=5.0, t_max=100, n_points=1000)
+    
+    # Generate individual plots for the web app
+    generate_time_plot(t, x, y)
+    generate_phase_portrait(x, y)
+    
+    # Also generate the combined plot
     plot_results(t, x, y)

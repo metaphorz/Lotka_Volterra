@@ -17,6 +17,7 @@
     <div class="tabs">
         <div class="tab active" onclick="switchTab('equations')">Equations</div>
         <div class="tab" onclick="switchTab('code')">Python Implementation</div>
+        <div class="tab" onclick="switchTab('plots')">Time Plots</div>
     </div>
     
     <div id="equations" class="tab-content active">
@@ -353,6 +354,53 @@ print(f"Maximum predator population: {np.max(y):.2f}")
 print(f"Average prey population: {np.mean(x):.2f}")
 print(f"Average predator population: {np.mean(y):.2f}")
 </code><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre>
+    </div>
+    
+    <div id="plots" class="tab-content">
+        <h2>Population Dynamics Over Time</h2>
+        <p>The Lotka-Volterra model produces characteristic oscillations in the populations of predator and prey species:</p>
+        
+        <div class="plot-container">
+            <div class="plot-wrapper">
+                <h3>Population vs. Time</h3>
+                <p>This plot shows how the prey (blue) and predator (red) populations change over time.</p>
+                <div class="plot" id="time-plot">
+                    <img src="population_time_plot.png" alt="Population vs Time Plot" class="plot-image">
+                    <div class="plot-description">
+                        <p>Key observations:</p>
+                        <ul>
+                            <li>The prey population (blue) increases when there are few predators</li>
+                            <li>As prey becomes abundant, the predator population (red) increases</li>
+                            <li>The growing predator population reduces the prey population</li>
+                            <li>With less prey available, the predator population declines</li>
+                            <li>This cycle repeats, creating the characteristic oscillations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="plot-wrapper">
+                <h3>Phase Portrait</h3>
+                <p>This plot shows the relationship between predator and prey populations, revealing the cyclic nature of the system.</p>
+                <div class="plot" id="phase-plot">
+                    <img src="phase_portrait.png" alt="Phase Portrait" class="plot-image">
+                    <div class="plot-description">
+                        <p>Key observations:</p>
+                        <ul>
+                            <li>Each point represents the population sizes at a moment in time</li>
+                            <li>The closed loops indicate the system returns to similar states periodically</li>
+                            <li>The system orbits around an equilibrium point where both populations are stable</li>
+                            <li>The exact shape depends on the parameters (α, β, γ, δ)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="plot-controls">
+            <h3>Interactive Parameters</h3>
+            <p>Coming soon: Interactive sliders to adjust model parameters and see how they affect the dynamics.</p>
+        </div>
     </div>
     
     <script src="script.js"></script>
