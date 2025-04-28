@@ -6,20 +6,40 @@ document.addEventListener('DOMContentLoaded', (event) => {
     
     // Initialize line numbers for blocks with line-numbers class
     document.querySelectorAll('pre.line-numbers').forEach((block) => {
-        const linesCount = block.textContent.split('\n').length;
-        const lineNumbersContainer = block.querySelector('.line-numbers-rows');
+        // Get lines of code
+        const lines = block.textContent.trim().split('\n');
+        const linesCount = lines.length;
         
-        if (lineNumbersContainer) {
-            // Make sure we have the right number of line spans
-            const currentSpans = lineNumbersContainer.querySelectorAll('span').length;
-            if (currentSpans !== linesCount) {
-                // Clear and rebuild
-                lineNumbersContainer.innerHTML = '';
-                for (let i = 0; i < linesCount; i++) {
-                    const span = document.createElement('span');
-                    lineNumbersContainer.appendChild(span);
+        // Get or create line numbers container
+        let lineNumbersContainer = block.querySelector('.line-numbers-rows');
+        if (!lineNumbersContainer) {
+            lineNumbersContainer = document.createElement('span');
+            lineNumbersContainer.className = 'line-numbers-rows';
+            block.appendChild(lineNumbersContainer);
+        }
+        
+        // Clear and rebuild line numbers
+        lineNumbersContainer.innerHTML = '';
+        for (let i = 0; i < linesCount; i++) {
+            const span = document.createElement('span');
+            span.setAttribute('data-line', (i + 1).toString());
+            lineNumbersContainer.appendChild(span);
+        }
+        
+        // Now we need to ensure each line of code is properly aligned with its number
+        const codeElement = block.querySelector('code');
+        if (codeElement) {
+            // Add a slight delay to ensure highlight.js has finished
+            setTimeout(() => {
+                // Force line breaks for each line to ensure alignment with numbers
+                const contentWithLineBreaks = lines.join('\n');
+                
+                // Add the code back with proper line breaks
+                if (contentWithLineBreaks.trim() !== codeElement.textContent.trim()) {
+                    codeElement.textContent = contentWithLineBreaks;
+                    hljs.highlightBlock(codeElement);
                 }
-            }
+            }, 10);
         }
     });
 });
@@ -112,6 +132,24 @@ window.onload = function() {
     // Highlight all code blocks
     document.querySelectorAll('pre code').forEach((block) => {
         hljs.highlightBlock(block);
+    });
+    
+    // Add click handlers for line numbers
+    document.querySelectorAll('.line-numbers-rows span').forEach((lineNumberSpan) => {
+        // Make line numbers clickable
+        lineNumberSpan.style.cursor = 'pointer';
+        lineNumberSpan.addEventListener('click', function() {
+            // Get the line number
+            const lineNumber = this.getAttribute('data-line') || this.textContent;
+            
+            // Highlight the line
+            const allLines = document.querySelectorAll('.line-numbers-rows span');
+            allLines.forEach(span => span.classList.remove('active-line'));
+            this.classList.add('active-line');
+            
+            // Could add more actions here, like copying line reference to clipboard
+            console.log(`Line ${lineNumber} clicked`);
+        });
     });
     
     // MathJax v3 way to typeset the page

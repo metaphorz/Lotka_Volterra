@@ -134,12 +134,17 @@ h1 {
 /* Style for line numbers in code */
 pre.line-numbers {
     position: relative;
-    padding-left: 3.8em;
+    padding-left: 0;
     counter-reset: linenumber;
+    display: flex;
+    flex-direction: column;
 }
 
 pre.line-numbers > code {
     position: relative;
+    margin-left: 3.5em; /* Space for line numbers */
+    display: block;
+    width: calc(100% - 3.5em);
 }
 
 .line-numbers .line-numbers-rows {
@@ -147,24 +152,55 @@ pre.line-numbers > code {
     pointer-events: none;
     top: 0;
     font-size: 100%;
-    left: -3.8em;
+    left: 0;
     width: 3em; /* works for line-numbers below 1000 lines */
-    letter-spacing: -1px;
-    border-right: 1px solid #999;
     user-select: none;
+    border-right: 1px solid #555;
+    background-color: rgba(30, 30, 30, 0.4);
+    height: 100%;
+    margin-right: 0.5em;
 }
 
 .line-numbers-rows > span {
     display: block;
     counter-increment: linenumber;
+    line-height: 1.5;
+    padding-top: 0;
 }
 
 .line-numbers-rows > span:before {
     content: counter(linenumber);
-    color: #999;
+    color: #888;
     display: block;
-    padding-right: 0.8em;
+    padding: 0 0.5em;
     text-align: right;
+}
+
+/* Style for line number highlighting */
+.line-numbers-rows > span:hover {
+    background-color: rgba(100, 100, 100, 0.3);
+}
+
+/* Style for active line */
+.line-numbers-rows > span.active-line {
+    background-color: rgba(76, 175, 80, 0.3);
+    font-weight: bold;
+}
+
+/* Highlight the corresponding code line when line number is active */
+.line-numbers-rows > span.active-line ~ code .line:nth-child(var(--line-number)) {
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+/* Add numbers to each line of code */
+pre.line-numbers code::before {
+    display: inline-block;
+    width: 3em;
+    border-right: 1px solid #555;
+    margin-right: 0.5em;
+    color: #888;
+    text-align: right;
+    padding-right: 0.5em;
 }
 .toggle-button {
     background-color: #4CAF50;
