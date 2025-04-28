@@ -38,8 +38,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // Create a wrapper for each line for better alignment
             const processedLines = [];
             lines.forEach((line, index) => {
+                const lineNumber = index + 1;
                 // Create a span for this line
-                processedLines.push(`<span class="line" data-line-number="${index + 1}">${line}</span>`);
+                processedLines.push(`<span class="line" data-line-number="${lineNumber}">${line}</span>`);
             });
             
             // Replace the content while preserving highlighting
@@ -65,26 +66,55 @@ document.addEventListener('DOMContentLoaded', (event) => {
             document.querySelectorAll('.line-numbers-rows span').forEach((lineNumberSpan) => {
                 lineNumberSpan.style.cursor = 'pointer';
                 
-                // Add click behavior
+                // Add click behavior to line numbers
                 lineNumberSpan.addEventListener('click', function() {
                     const lineNumber = this.getAttribute('data-line');
-                    
-                    // Highlight the line number
-                    document.querySelectorAll('.line-numbers-rows span').forEach(span => {
-                        span.classList.remove('active-line');
-                    });
-                    this.classList.add('active-line');
-                    
-                    // Highlight the corresponding code line
-                    const codeLines = codeElement.querySelectorAll('.line');
-                    codeLines.forEach(line => {
-                        line.classList.remove('highlighted-line');
-                        if (line.getAttribute('data-line-number') === lineNumber) {
-                            line.classList.add('highlighted-line');
-                        }
-                    });
+                    highlightLine(lineNumber, codeElement);
                 });
             });
+            
+            // Make code lines also clickable
+            document.querySelectorAll('.line').forEach((codeLine) => {
+                codeLine.style.cursor = 'pointer';
+                
+                // Add click behavior to code lines
+                codeLine.addEventListener('click', function() {
+                    const lineNumber = this.getAttribute('data-line-number');
+                    highlightLine(lineNumber, codeElement);
+                });
+            });
+            
+            // Function to highlight a specific line
+            function highlightLine(lineNumber, codeElement) {
+                // Switch to code tab if we're not there already
+                if (!document.getElementById('code').classList.contains('active')) {
+                    switchTab('code');
+                }
+                
+                // Update URL hash without scrolling
+                const currentScrollPosition = window.pageYOffset;
+                window.location.hash = lineNumber;
+                window.scrollTo(0, currentScrollPosition);
+                
+                // Highlight the line number
+                document.querySelectorAll('.line-numbers-rows span').forEach(span => {
+                    span.classList.remove('active-line');
+                    if (span.getAttribute('data-line') === lineNumber) {
+                        span.classList.add('active-line');
+                    }
+                });
+                
+                // Highlight the corresponding code line
+                const codeLines = codeElement.querySelectorAll('.line');
+                codeLines.forEach(line => {
+                    line.classList.remove('highlighted-line');
+                    if (line.getAttribute('data-line-number') === lineNumber) {
+                        line.classList.add('highlighted-line');
+                        // Scroll the line into view if needed
+                        line.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+            }
         }, 50); // Small delay to ensure highlighting is complete
     });
 });
@@ -104,6 +134,20 @@ function switchTab(tabId) {
     // Activate the selected tab and content
     document.getElementById(tabId).classList.add('active');
     document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
+    
+    // If switching to code tab and there's a line number in the hash, highlight that line
+    if (tabId === 'code' && window.location.hash) {
+        const lineNumber = window.location.hash.substring(1); // Remove the # character
+        if (!isNaN(parseInt(lineNumber))) {
+            // Find the code element
+            const codeElement = document.querySelector('#code pre.line-numbers code');
+            if (codeElement) {
+                setTimeout(() => {
+                    highlightLine(lineNumber, codeElement);
+                }, 100);
+            }
+        }
+    }
 }
 
 // Position tooltips properly when hovered
@@ -172,6 +216,38 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Global function to highlight a specific line
+function goToCodeLine(lineNumber) {
+    switchTab('code');
+    
+    // Small delay to ensure the code tab is rendered
+    setTimeout(() => {
+        const codeElement = document.querySelector('#code pre.line-numbers code');
+        if (codeElement) {
+            // Highlight the line number
+            document.querySelectorAll('.line-numbers-rows span').forEach(span => {
+                span.classList.remove('active-line');
+                if (span.getAttribute('data-line') === lineNumber) {
+                    span.classList.add('active-line');
+                }
+            });
+            
+            // Highlight the corresponding code line
+            const codeLines = codeElement.querySelectorAll('.line');
+            codeLines.forEach(line => {
+                line.classList.remove('highlighted-line');
+                if (line.getAttribute('data-line-number') === lineNumber) {
+                    line.classList.add('highlighted-line');
+                    // Scroll the line into view
+                    line.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+        }
+    }, 100);
+    
+    return false; // Prevent default link behavior
+}
+
 // Ensure MathJax properly processes the equations
 window.onload = function() {
     // Highlight all code blocks
@@ -179,23 +255,13 @@ window.onload = function() {
         hljs.highlightBlock(block);
     });
     
-    // Add click handlers for line numbers
-    document.querySelectorAll('.line-numbers-rows span').forEach((lineNumberSpan) => {
-        // Make line numbers clickable
-        lineNumberSpan.style.cursor = 'pointer';
-        lineNumberSpan.addEventListener('click', function() {
-            // Get the line number
-            const lineNumber = this.getAttribute('data-line') || this.textContent;
-            
-            // Highlight the line
-            const allLines = document.querySelectorAll('.line-numbers-rows span');
-            allLines.forEach(span => span.classList.remove('active-line'));
-            this.classList.add('active-line');
-            
-            // Could add more actions here, like copying line reference to clipboard
-            console.log(`Line ${lineNumber} clicked`);
-        });
-    });
+    // Check if there's a line number in the URL hash
+    if (window.location.hash && window.location.hash.length > 1) {
+        const lineNumber = window.location.hash.substring(1);
+        if (!isNaN(parseInt(lineNumber))) {
+            goToCodeLine(lineNumber);
+        }
+    }
     
     // MathJax v3 way to typeset the page
     if (window.MathJax && window.MathJax.typeset) {

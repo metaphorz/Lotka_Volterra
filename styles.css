@@ -114,6 +114,17 @@ h1 {
     font-family: 'Courier New', monospace;
 }
 
+.code-snippet a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.code-snippet a:hover {
+    text-decoration: underline;
+    color: #45a049;
+}
+
 /* Highlight line number references */
 .code-snippet pre code {
     position: relative;
@@ -205,6 +216,13 @@ pre.line-numbers > code {
     display: inline-block;
     width: 100%;
     border-radius: 0 3px 3px 0;
+    cursor: pointer;
+}
+
+/* Ensure highlighted lines stand out */
+pre.line-numbers .highlighted-line {
+    font-weight: 500;
+    border-left: 2px solid rgba(76, 175, 80, 0.7);
 }
 
 .toggle-button {
