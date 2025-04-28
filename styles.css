@@ -37,10 +37,117 @@ h1 {
     visibility: visible;
     opacity: 1;
 }
+
+/* Styling for equation terms */
+.equation-term {
+    position: relative;
+    display: inline-block;
+    border: 1px solid transparent;
+    padding: 2px 4px;
+    border-radius: 4px;
+    cursor: help;
+}
+
+.equation-term:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.equation-term .term-box {
+    display: inline-block;
+}
+
+.equation-term .term-meaning {
+    visibility: hidden;
+    width: 500px;
+    background-color: #2b5797;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 15px;
+    position: fixed;
+    z-index: 101; /* Higher than individual terms */
+    opacity: 0;
+    transition: opacity 0.3s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.equation-term:hover .term-meaning {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Color coding for different terms */
+.growth-term {
+    border-color: rgba(76, 175, 80, 0.3);
+}
+.growth-term:hover {
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+.predation-term {
+    border-color: rgba(244, 67, 54, 0.3);
+}
+.predation-term:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+}
+
+.death-term {
+    border-color: rgba(33, 150, 243, 0.3);
+}
+.death-term:hover {
+    background-color: rgba(33, 150, 243, 0.1);
+}
+
+.reproduction-term {
+    border-color: rgba(255, 152, 0, 0.3);
+}
+.reproduction-term:hover {
+    background-color: rgba(255, 152, 0, 0.1);
+}
+
+.rate-term {
+    font-weight: bold;
+}
 .code-snippet {
     margin-top: 10px;
     border-radius: 4px;
     font-family: 'Courier New', monospace;
+}
+
+/* Style for line numbers in code */
+pre.line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+}
+
+pre.line-numbers > code {
+    position: relative;
+}
+
+.line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -3.8em;
+    width: 3em; /* works for line-numbers below 1000 lines */
+    letter-spacing: -1px;
+    border-right: 1px solid #999;
+    user-select: none;
+}
+
+.line-numbers-rows > span {
+    display: block;
+    counter-increment: linenumber;
+}
+
+.line-numbers-rows > span:before {
+    content: counter(linenumber);
+    color: #999;
+    display: block;
+    padding-right: 0.8em;
+    text-align: right;
 }
 .toggle-button {
     background-color: #4CAF50;

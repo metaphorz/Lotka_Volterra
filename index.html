@@ -26,7 +26,7 @@
             
             <div class="equation">
                 <p style="font-size: 20px; margin: 20px 0;">
-                    <span class="term">
+                    <span class="term rate-term">
                         \(\frac{dx}{dt}\)
                         <span class="tooltip">
                             <strong>Rate of change of the prey population over time</strong><br>
@@ -39,62 +39,88 @@ def dxdt(x, y, alpha, beta):
                         </span>
                     </span>
                     = 
-                    <span class="term">
-                        \(\alpha\)
-                        <span class="tooltip">
-                            <strong>Prey growth rate</strong><br>
-                            The natural reproduction rate of prey in the absence of predators.
-                            <div class="code-snippet">
-                                <pre><code class="python"># In the code, alpha is a constant parameter:
+                    <span class="equation-term growth-term">
+                        <span class="term-box">
+                            <span class="term">
+                                \(\alpha\)
+                                <span class="tooltip">
+                                    <strong>Prey growth rate</strong><br>
+                                    The natural reproduction rate of prey in the absence of predators.
+                                    <div class="code-snippet">
+                                        <pre><code class="python"># In the code, alpha is a constant parameter:
 alpha = 1.1  # Example: Prey growth rate</code></pre>
-                            </div>
-                        </span>
-                    </span>
-                    <span class="term">
-                        \(x\)
-                        <span class="tooltip">
-                            <strong>Prey population size</strong><br>
-                            The number of prey individuals in the ecosystem.
-                            <div class="code-snippet">
-                                <pre><code class="python"># In the code, x is tracked as an array over time:
+                                    </div>
+                                </span>
+                            </span>
+                            <span class="term">
+                                \(x\)
+                                <span class="tooltip">
+                                    <strong>Prey population size</strong><br>
+                                    The number of prey individuals in the ecosystem.
+                                    <div class="code-snippet">
+                                        <pre><code class="python"># In the code, x is tracked as an array over time:
 x = np.zeros(n_steps)
 x[0] = x0  # Initial prey population</code></pre>
+                                    </div>
+                                </span>
+                            </span>
+                        </span>
+                        <span class="tooltip term-meaning">
+                            <strong>Prey Birth Term</strong><br>
+                            This term represents the natural growth of the prey population through reproduction.
+                            <br>The prey population grows at a rate proportional to its current size.
+                            <div class="code-snippet">
+                                <pre><code class="python"># In code, this term is implemented as:
+alpha * x  # Prey births</code></pre>
                             </div>
                         </span>
                     </span>
                     - 
-                    <span class="term">
-                        \(\beta\)
-                        <span class="tooltip">
-                            <strong>Predation rate</strong><br>
-                            The rate at which predators encounter and consume prey.
-                            <div class="code-snippet">
-                                <pre><code class="python"># In the code, beta is a constant parameter:
+                    <span class="equation-term predation-term">
+                        <span class="term-box">
+                            <span class="term">
+                                \(\beta\)
+                                <span class="tooltip">
+                                    <strong>Predation rate</strong><br>
+                                    The rate at which predators encounter and consume prey.
+                                    <div class="code-snippet">
+                                        <pre><code class="python"># In the code, beta is a constant parameter:
 beta = 0.4  # Example: Predation rate coefficient</code></pre>
-                            </div>
-                        </span>
-                    </span>
-                    <span class="term">
-                        \(x\)
-                        <span class="tooltip">
-                            <strong>Prey population size</strong><br>
-                            The number of prey individuals in the ecosystem.
-                            <div class="code-snippet">
-                                <pre><code class="python"># In the code, x is tracked as an array over time:
+                                    </div>
+                                </span>
+                            </span>
+                            <span class="term">
+                                \(x\)
+                                <span class="tooltip">
+                                    <strong>Prey population size</strong><br>
+                                    The number of prey individuals in the ecosystem.
+                                    <div class="code-snippet">
+                                        <pre><code class="python"># In the code, x is tracked as an array over time:
 x = np.zeros(n_steps)
 x[0] = x0  # Initial prey population</code></pre>
-                            </div>
-                        </span>
-                    </span>
-                    <span class="term">
-                        \(y\)
-                        <span class="tooltip">
-                            <strong>Predator population size</strong><br>
-                            The number of predator individuals in the ecosystem.
-                            <div class="code-snippet">
-                                <pre><code class="python"># In the code, y is tracked as an array over time:
+                                    </div>
+                                </span>
+                            </span>
+                            <span class="term">
+                                \(y\)
+                                <span class="tooltip">
+                                    <strong>Predator population size</strong><br>
+                                    The number of predator individuals in the ecosystem.
+                                    <div class="code-snippet">
+                                        <pre><code class="python"># In the code, y is tracked as an array over time:
 y = np.zeros(n_steps)
 y[0] = y0  # Initial predator population</code></pre>
+                                    </div>
+                                </span>
+                            </span>
+                        </span>
+                        <span class="tooltip term-meaning">
+                            <strong>Predation Term</strong><br>
+                            This term represents prey deaths due to predation.
+                            <br>The rate of predation depends on both the prey and predator populations - more encounters occur when both populations are larger.
+                            <div class="code-snippet">
+                                <pre><code class="python"># In code, this term is implemented as:
+beta * x * y  # Prey deaths due to predation</code></pre>
                             </div>
                         </span>
                     </span>
@@ -103,7 +129,7 @@ y[0] = y0  # Initial predator population</code></pre>
             
             <div class="equation">
                 <p style="font-size: 20px; margin: 20px 0;">
-                    <span class="term">
+                    <span class="term rate-term">
                         \(\frac{dy}{dt}\)
                         <span class="tooltip">
                             <strong>Rate of change of the predator population over time</strong><br>
@@ -116,62 +142,88 @@ def dydt(x, y, gamma, delta):
                         </span>
                     </span>
                     = 
-                    <span class="term">
-                        \(-\gamma\)
-                        <span class="tooltip">
-                            <strong>Predator death rate</strong><br>
-                            The natural mortality rate of predators in the absence of prey.
-                            <div class="code-snippet">
-                                <pre><code class="python"># In the code, gamma is a constant parameter:
+                    <span class="equation-term death-term">
+                        <span class="term-box">
+                            <span class="term">
+                                \(-\gamma\)
+                                <span class="tooltip">
+                                    <strong>Predator death rate</strong><br>
+                                    The natural mortality rate of predators in the absence of prey.
+                                    <div class="code-snippet">
+                                        <pre><code class="python"># In the code, gamma is a constant parameter:
 gamma = 0.4  # Example: Predator mortality rate</code></pre>
-                            </div>
-                        </span>
-                    </span>
-                    <span class="term">
-                        \(y\)
-                        <span class="tooltip">
-                            <strong>Predator population size</strong><br>
-                            The number of predator individuals in the ecosystem.
-                            <div class="code-snippet">
-                                <pre><code class="python"># In the code, y is tracked as an array over time:
+                                    </div>
+                                </span>
+                            </span>
+                            <span class="term">
+                                \(y\)
+                                <span class="tooltip">
+                                    <strong>Predator population size</strong><br>
+                                    The number of predator individuals in the ecosystem.
+                                    <div class="code-snippet">
+                                        <pre><code class="python"># In the code, y is tracked as an array over time:
 y = np.zeros(n_steps)
 y[0] = y0  # Initial predator population</code></pre>
+                                    </div>
+                                </span>
+                            </span>
+                        </span>
+                        <span class="tooltip term-meaning">
+                            <strong>Predator Death Term</strong><br>
+                            This term represents the natural mortality of predators.
+                            <br>Predator deaths occur at a rate proportional to the current predator population.
+                            <div class="code-snippet">
+                                <pre><code class="python"># In code, this term is implemented as:
+-gamma * y  # Predator deaths</code></pre>
                             </div>
                         </span>
                     </span>
                     + 
-                    <span class="term">
-                        \(\delta\)
-                        <span class="tooltip">
-                            <strong>Predator efficiency</strong><br>
-                            The efficiency with which predators convert consumed prey into new predators.
-                            <div class="code-snippet">
-                                <pre><code class="python"># In the code, delta is a constant parameter:
+                    <span class="equation-term reproduction-term">
+                        <span class="term-box">
+                            <span class="term">
+                                \(\delta\)
+                                <span class="tooltip">
+                                    <strong>Predator efficiency</strong><br>
+                                    The efficiency with which predators convert consumed prey into new predators.
+                                    <div class="code-snippet">
+                                        <pre><code class="python"># In the code, delta is a constant parameter:
 delta = 0.1  # Example: Predator efficiency rate</code></pre>
-                            </div>
-                        </span>
-                    </span>
-                    <span class="term">
-                        \(x\)
-                        <span class="tooltip">
-                            <strong>Prey population size</strong><br>
-                            The number of prey individuals in the ecosystem.
-                            <div class="code-snippet">
-                                <pre><code class="python"># In the code, x is tracked as an array over time:
+                                    </div>
+                                </span>
+                            </span>
+                            <span class="term">
+                                \(x\)
+                                <span class="tooltip">
+                                    <strong>Prey population size</strong><br>
+                                    The number of prey individuals in the ecosystem.
+                                    <div class="code-snippet">
+                                        <pre><code class="python"># In the code, x is tracked as an array over time:
 x = np.zeros(n_steps)
 x[0] = x0  # Initial prey population</code></pre>
-                            </div>
-                        </span>
-                    </span>
-                    <span class="term">
-                        \(y\)
-                        <span class="tooltip">
-                            <strong>Predator population size</strong><br>
-                            The number of predator individuals in the ecosystem.
-                            <div class="code-snippet">
-                                <pre><code class="python"># In the code, y is tracked as an array over time:
+                                    </div>
+                                </span>
+                            </span>
+                            <span class="term">
+                                \(y\)
+                                <span class="tooltip">
+                                    <strong>Predator population size</strong><br>
+                                    The number of predator individuals in the ecosystem.
+                                    <div class="code-snippet">
+                                        <pre><code class="python"># In the code, y is tracked as an array over time:
 y = np.zeros(n_steps)
 y[0] = y0  # Initial predator population</code></pre>
+                                    </div>
+                                </span>
+                            </span>
+                        </span>
+                        <span class="tooltip term-meaning">
+                            <strong>Predator Reproduction Term</strong><br>
+                            This term represents the growth of the predator population from consuming prey.
+                            <br>Predator births are proportional to successful predation events (which depend on both populations).
+                            <div class="code-snippet">
+                                <pre><code class="python"># In code, this term is implemented as:
+delta * x * y  # Predator births from consuming prey</code></pre>
                             </div>
                         </span>
                     </span>
@@ -195,7 +247,7 @@ y[0] = y0  # Initial predator population</code></pre>
         <h2>Python Implementation</h2>
         <p>Below is a complete Python implementation of the Lotka-Volterra model using numerical integration:</p>
         
-        <pre><code class="python">import numpy as np
+        <pre class="line-numbers"><code class="python">import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
@@ -288,7 +340,7 @@ print(f"Maximum prey population: {np.max(x):.2f}")
 print(f"Maximum predator population: {np.max(y):.2f}")
 print(f"Average prey population: {np.mean(x):.2f}")
 print(f"Average predator population: {np.mean(y):.2f}")
-</code></pre>
+</code><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre>
     </div>
     
     <script src="script.js"></script>

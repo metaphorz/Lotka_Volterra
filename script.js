@@ -1,7 +1,26 @@
-// Highlight the code
+// Highlight the code and add line numbers
 document.addEventListener('DOMContentLoaded', (event) => {
     document.querySelectorAll('pre code').forEach((block) => {
         hljs.highlightBlock(block);
+    });
+    
+    // Initialize line numbers for blocks with line-numbers class
+    document.querySelectorAll('pre.line-numbers').forEach((block) => {
+        const linesCount = block.textContent.split('\n').length;
+        const lineNumbersContainer = block.querySelector('.line-numbers-rows');
+        
+        if (lineNumbersContainer) {
+            // Make sure we have the right number of line spans
+            const currentSpans = lineNumbersContainer.querySelectorAll('span').length;
+            if (currentSpans !== linesCount) {
+                // Clear and rebuild
+                lineNumbersContainer.innerHTML = '';
+                for (let i = 0; i < linesCount; i++) {
+                    const span = document.createElement('span');
+                    lineNumbersContainer.appendChild(span);
+                }
+            }
+        }
     });
 });
 
@@ -24,8 +43,8 @@ function switchTab(tabId) {
 
 // Position tooltips properly when hovered
 document.addEventListener('DOMContentLoaded', function() {
+    // Position regular term tooltips
     const terms = document.querySelectorAll('.term');
-    
     terms.forEach(term => {
         term.addEventListener('mouseenter', function(e) {
             const tooltip = this.querySelector('.tooltip');
@@ -51,6 +70,35 @@ document.addEventListener('DOMContentLoaded', function() {
             if (top < 10) {
                 top = rect.bottom + 10;
             }
+            
+            // Position tooltip
+            tooltip.style.top = `${top}px`;
+            tooltip.style.left = `${left}px`;
+        });
+    });
+    
+    // Position equation term tooltips
+    const equationTerms = document.querySelectorAll('.equation-term');
+    equationTerms.forEach(term => {
+        term.addEventListener('mouseenter', function(e) {
+            const tooltip = this.querySelector('.term-meaning');
+            if (!tooltip) return;
+            
+            // Get position of term
+            const rect = this.getBoundingClientRect();
+            
+            // Calculate best position for tooltip
+            const tooltipWidth = 500; // Same as in CSS
+            const windowWidth = window.innerWidth;
+            
+            // Position below the term with slight offset
+            let top = rect.bottom + 15;
+            let left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+            
+            // Adjust horizontal position if too close to edge
+            if (left < 10) left = 10;
+            if (left + tooltipWidth > windowWidth - 10) 
+                left = windowWidth - tooltipWidth - 10;
             
             // Position tooltip
             tooltip.style.top = `${top}px`;
