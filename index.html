@@ -33,6 +33,7 @@
                             This represents how the prey population changes at each moment in time.
                             <div class="code-snippet">
                                 <pre><code class="python"># In Python differential equations, dx/dt is implemented as:
+# See lines 281-282 in the Python Implementation:
 def dxdt(x, y, alpha, beta):
     return alpha * x - beta * x * y</code></pre>
                             </div>
@@ -48,7 +49,8 @@ def dxdt(x, y, alpha, beta):
                                     The natural reproduction rate of prey in the absence of predators.
                                     <div class="code-snippet">
                                         <pre><code class="python"># In the code, alpha is a constant parameter:
-alpha = 1.1  # Example: Prey growth rate</code></pre>
+# See line 287 in the Python Implementation:
+alpha = 1.1  # Prey growth rate</code></pre>
                                     </div>
                                 </span>
                             </span>
@@ -59,8 +61,8 @@ alpha = 1.1  # Example: Prey growth rate</code></pre>
                                     The number of prey individuals in the ecosystem.
                                     <div class="code-snippet">
                                         <pre><code class="python"># In the code, x is tracked as an array over time:
-x = np.zeros(n_steps)
-x[0] = x0  # Initial prey population</code></pre>
+# See lines 310-311 in the Python Implementation:
+x = solution.y[0]  # Prey population over time</code></pre>
                                     </div>
                                 </span>
                             </span>
@@ -71,7 +73,8 @@ x[0] = x0  # Initial prey population</code></pre>
                             <br>The prey population grows at a rate proportional to its current size.
                             <div class="code-snippet">
                                 <pre><code class="python"># In code, this term is implemented as:
-alpha * x  # Prey births</code></pre>
+# See line 282 in the Python Implementation:
+alpha * x  # First part of dxdt calculation</code></pre>
                             </div>
                         </span>
                     </span>
@@ -85,7 +88,8 @@ alpha * x  # Prey births</code></pre>
                                     The rate at which predators encounter and consume prey.
                                     <div class="code-snippet">
                                         <pre><code class="python"># In the code, beta is a constant parameter:
-beta = 0.4  # Example: Predation rate coefficient</code></pre>
+# See line 288 in the Python Implementation:
+beta = 0.4   # Predation rate</code></pre>
                                     </div>
                                 </span>
                             </span>
@@ -96,8 +100,8 @@ beta = 0.4  # Example: Predation rate coefficient</code></pre>
                                     The number of prey individuals in the ecosystem.
                                     <div class="code-snippet">
                                         <pre><code class="python"># In the code, x is tracked as an array over time:
-x = np.zeros(n_steps)
-x[0] = x0  # Initial prey population</code></pre>
+# See lines 310-311 in the Python Implementation:
+x = solution.y[0]  # Prey population over time</code></pre>
                                     </div>
                                 </span>
                             </span>
@@ -108,8 +112,8 @@ x[0] = x0  # Initial prey population</code></pre>
                                     The number of predator individuals in the ecosystem.
                                     <div class="code-snippet">
                                         <pre><code class="python"># In the code, y is tracked as an array over time:
-y = np.zeros(n_steps)
-y[0] = y0  # Initial predator population</code></pre>
+# See lines 310, 312 in the Python Implementation:
+y = solution.y[1]  # Predator population over time</code></pre>
                                     </div>
                                 </span>
                             </span>
@@ -120,7 +124,8 @@ y[0] = y0  # Initial predator population</code></pre>
                             <br>The rate of predation depends on both the prey and predator populations - more encounters occur when both populations are larger.
                             <div class="code-snippet">
                                 <pre><code class="python"># In code, this term is implemented as:
-beta * x * y  # Prey deaths due to predation</code></pre>
+# See line 282 in the Python Implementation:
+beta * x * y  # Negative term in prey equation</code></pre>
                             </div>
                         </span>
                     </span>
@@ -136,8 +141,9 @@ beta * x * y  # Prey deaths due to predation</code></pre>
                             This represents how the predator population changes at each moment in time.
                             <div class="code-snippet">
                                 <pre><code class="python"># In Python differential equations, dy/dt is implemented as:
+# See lines 281-283 in the Python Implementation:
 def dydt(x, y, gamma, delta):
-    return -gamma * y + delta * x * y</code></pre>
+    return -gamma * y + delta * x * y  # Similar to line 283</code></pre>
                             </div>
                         </span>
                     </span>
@@ -151,7 +157,8 @@ def dydt(x, y, gamma, delta):
                                     The natural mortality rate of predators in the absence of prey.
                                     <div class="code-snippet">
                                         <pre><code class="python"># In the code, gamma is a constant parameter:
-gamma = 0.4  # Example: Predator mortality rate</code></pre>
+# See line 289 in the Python Implementation:
+gamma = 0.4  # Predator death rate</code></pre>
                                     </div>
                                 </span>
                             </span>
@@ -162,8 +169,8 @@ gamma = 0.4  # Example: Predator mortality rate</code></pre>
                                     The number of predator individuals in the ecosystem.
                                     <div class="code-snippet">
                                         <pre><code class="python"># In the code, y is tracked as an array over time:
-y = np.zeros(n_steps)
-y[0] = y0  # Initial predator population</code></pre>
+# See lines 310, 312 in the Python Implementation:
+y = solution.y[1]  # Predator population over time</code></pre>
                                     </div>
                                 </span>
                             </span>
@@ -174,7 +181,8 @@ y[0] = y0  # Initial predator population</code></pre>
                             <br>Predator deaths occur at a rate proportional to the current predator population.
                             <div class="code-snippet">
                                 <pre><code class="python"># In code, this term is implemented as:
--gamma * y  # Predator deaths</code></pre>
+# See line 283 in the Python Implementation:
+-gamma * y  # First term in predator equation</code></pre>
                             </div>
                         </span>
                     </span>
@@ -188,7 +196,8 @@ y[0] = y0  # Initial predator population</code></pre>
                                     The efficiency with which predators convert consumed prey into new predators.
                                     <div class="code-snippet">
                                         <pre><code class="python"># In the code, delta is a constant parameter:
-delta = 0.1  # Example: Predator efficiency rate</code></pre>
+# See line 290 in the Python Implementation:
+delta = 0.1  # Predator efficiency</code></pre>
                                     </div>
                                 </span>
                             </span>
@@ -199,8 +208,8 @@ delta = 0.1  # Example: Predator efficiency rate</code></pre>
                                     The number of prey individuals in the ecosystem.
                                     <div class="code-snippet">
                                         <pre><code class="python"># In the code, x is tracked as an array over time:
-x = np.zeros(n_steps)
-x[0] = x0  # Initial prey population</code></pre>
+# See lines 310-311 in the Python Implementation:
+x = solution.y[0]  # Prey population over time</code></pre>
                                     </div>
                                 </span>
                             </span>
@@ -211,8 +220,8 @@ x[0] = x0  # Initial prey population</code></pre>
                                     The number of predator individuals in the ecosystem.
                                     <div class="code-snippet">
                                         <pre><code class="python"># In the code, y is tracked as an array over time:
-y = np.zeros(n_steps)
-y[0] = y0  # Initial predator population</code></pre>
+# See lines 310, 312 in the Python Implementation:
+y = solution.y[1]  # Predator population over time</code></pre>
                                     </div>
                                 </span>
                             </span>
@@ -223,7 +232,8 @@ y[0] = y0  # Initial predator population</code></pre>
                             <br>Predator births are proportional to successful predation events (which depend on both populations).
                             <div class="code-snippet">
                                 <pre><code class="python"># In code, this term is implemented as:
-delta * x * y  # Predator births from consuming prey</code></pre>
+# See line 283 in the Python Implementation:
+delta * x * y  # Positive term in predator equation</code></pre>
                             </div>
                         </span>
                     </span>

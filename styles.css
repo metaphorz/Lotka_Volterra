@@ -114,6 +114,23 @@ h1 {
     font-family: 'Courier New', monospace;
 }
 
+/* Highlight line number references */
+.code-snippet pre code {
+    position: relative;
+}
+
+.code-snippet pre code:has(+ [data-line]) {
+    position: relative;
+}
+
+.code-snippet pre code:has(+ [data-line])::after {
+    content: attr(data-line);
+    position: absolute;
+    right: 5px;
+    color: #888;
+    font-style: italic;
+}
+
 /* Style for line numbers in code */
 pre.line-numbers {
     position: relative;
